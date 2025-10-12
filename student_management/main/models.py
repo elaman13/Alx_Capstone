@@ -65,7 +65,7 @@ class Profile(models.Model):
     ROLE_CHOICE = [
         ('student', 'Student'),
         ('teacher', 'Teacher'),
-        ('admin', 'admin')
+        ('admin', 'Admin')
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
