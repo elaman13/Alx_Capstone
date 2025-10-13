@@ -1,6 +1,10 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
-from . import models, serializers
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from . import serializers
+
+User = get_user_model()
 
 # Create your views here.
 class LoginView(generics.GenericAPIView):
@@ -8,23 +12,30 @@ class LoginView(generics.GenericAPIView):
     Login View for post request only.
     """
     serializer_class = serializers.LoginSerializer
+    queryset = User.objects.all()
 
     def get(self, request):
-        user = models.User.objects.get(pk=request.user.id)
+        serializer = self.get_serializer(self.get_queryset(), many=True)
 
-        serializer = self.get_serializer(user)
         return Response(serializer.data)
 
     def post(self,request):
+        """
+        return username and token when users logs in.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         token = serializer.save()
+
         return Response(token, status=status.HTTP_200_OK)
 
 
 class SignUpView(generics.GenericAPIView):
+    """
+    Register User
+    """
     serializer_class = serializers.SignUpSerializer
-    queryset = models.User.objects.all()
+    queryset = User.objects.all()
 
     def get(self, request):
         serializer = self.get_serializer(self.get_queryset(), many=True)

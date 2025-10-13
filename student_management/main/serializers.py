@@ -1,10 +1,12 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
+
+User = get_user_model()
 
 class LoginSerializer(serializers.Serializer):
     """Serialize and create authenticated users token while deleting the previous if existed.
@@ -34,7 +36,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'role']
     
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
