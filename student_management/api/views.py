@@ -12,23 +12,46 @@ class StudentView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        if  request.user.role == 'admin':
-            pass
+        user = request.user
 
-        if request.user.role == 'teacher':
+        # Admin can see all students
+        if user.role == 'admin':
             serializer = self.get_serializer(self.get_queryset(), many=True)
-
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
+        # Teacher can see only students in their assigned sections
+        if user.role == 'teacher':
+            try:
+                teacher = models.Teacher.objects.get(user=user)
+                # Assuming Section has related_name='students' for Student FK
+                students = models.Student.objects.filter(section__teachers=teacher)
+                serializer = self.get_serializer(students, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except models.Teacher.DoesNotExist:
+                return Response(
+                    {"detail": "Teacher profile not found."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        # Students cannot list other students
+        return Response(
+            {"detail": "You do not have permission."},
+            status=status.HTTP_403_FORBIDDEN
+        )
 
     def post(self, request):
+        # Only admin can create new students
         if request.user.role == 'admin':
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+
+        return Response(
+            {"detail": "You do not have permission."},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
 
 
 class StudentDetailView(generics.GenericAPIView):
@@ -84,7 +107,7 @@ class SectionView(generics.GenericAPIView):
         # Teachers view
         elif user.role == 'teacher':
             try:
-                teacher = models.Teacher.objects.get(pk=user.id)
+                teacher = models.Teacher.objects.get(user=user)
                 classes = teacher.classes.all()
                 serializer = self.get_serializer(classes, many=True)
 
@@ -110,6 +133,7 @@ class SectionView(generics.GenericAPIView):
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+
 
 class SectionDetailView(generics.GenericAPIView):
     queryset = models.Section.objects.all()
@@ -141,7 +165,7 @@ class SectionDetailView(generics.GenericAPIView):
         user = request.user
         if user.role == 'admin':
             section = self.get_object()
-            serializer = self.get_serializer(section, data=request.data)
+            serializer = self.get_serializer(section, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
@@ -157,9 +181,62 @@ class SectionDetailView(generics.GenericAPIView):
         return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
 
 
-class CourseViewSet(ModelViewSet):
+class CourseView(generics.GenericAPIView):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
+
+    def get(self, request):
+
+        if request.user.role == 'admin':
+            serializer = self.get_serializer(self.get_queryset(), many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+    
+    def post(self, request):
+
+        if request.user.role == 'admin':
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+
+
+class CourseDetailView(generics.GenericAPIView):
+    queryset = models.Course.objects.all()
+    serializer_class = serializers.CourseSerializer
+
+    def get(self, request, pk):
+        user = request.user
+        course = self.get_object()
+
+        if user.role == 'admin':
+            serializer = self.get_serializer(course)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+    
+    def patch(self, request, pk):
+        course = self.get_object()
+        user = request.user
+
+        if user.role == 'admin':
+            serializer = self.get_serializer(course, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+    
+    def delete(self, request, pk):
+        if request.user.role == 'admin':
+            course = self.get_object()
+            course.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+
 
 class GradeView(generics.GenericAPIView):
     queryset = models.Grade.objects.all()
@@ -186,8 +263,8 @@ class GradeView(generics.GenericAPIView):
             serializer.save()
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
-    
+        return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)    
+
 
 class GradeDetailView(generics.GenericAPIView):
     queryset = models.Grade.objects.all()
@@ -216,7 +293,7 @@ class GradeDetailView(generics.GenericAPIView):
         grade = self.get_object()
 
         if request.user.role == 'admin':
-            serializer = self.get_serializer(grade, data=request.data)
+            serializer = self.get_serializer(grade, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
 
@@ -241,6 +318,7 @@ class GradeDetailView(generics.GenericAPIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
 
+
 class TeacherView(generics.GenericAPIView):
     queryset = models.Teacher.objects.all()
     serializer_class = serializers.TeacherSerializer
@@ -262,6 +340,7 @@ class TeacherView(generics.GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response({"detail": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
+
 
 class TeacherDetailView(generics.GenericAPIView):
     queryset = models.Teacher.objects.all()
