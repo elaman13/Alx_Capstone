@@ -77,7 +77,7 @@ class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     points = models.DecimalField(decimal_places=2, max_digits=5, default=0)
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
 
     class Meta:
         unique_together = ('student', 'course')
