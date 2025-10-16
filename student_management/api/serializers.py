@@ -28,6 +28,7 @@ class GradeSerializer(serializers.ModelSerializer):
         model = models.Grade
         fields = '__all__'
 
+
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Teacher
