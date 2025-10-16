@@ -91,6 +91,7 @@ class StudentDetailView(generics.GenericAPIView):
 class SectionView(generics.GenericAPIView):
     queryset = models.Section.objects.all()
     serializer_class = serializers.SectionSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         """
@@ -138,6 +139,7 @@ class SectionView(generics.GenericAPIView):
 class SectionDetailView(generics.GenericAPIView):
     queryset = models.Section.objects.all()
     serializer_class = serializers.SectionSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
         user = request.user
@@ -207,6 +209,7 @@ class CourseView(generics.GenericAPIView):
 class CourseDetailView(generics.GenericAPIView):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
         user = request.user
@@ -241,6 +244,7 @@ class CourseDetailView(generics.GenericAPIView):
 class GradeView(generics.GenericAPIView):
     queryset = models.Grade.objects.all()
     serializer_class = serializers.GradeSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
 
@@ -269,6 +273,7 @@ class GradeView(generics.GenericAPIView):
 class GradeDetailView(generics.GenericAPIView):
     queryset = models.Grade.objects.all()
     serializer_class = serializers.GradeSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
         user = request.user
@@ -322,6 +327,7 @@ class GradeDetailView(generics.GenericAPIView):
 class TeacherView(generics.GenericAPIView):
     queryset = models.Teacher.objects.all()
     serializer_class = serializers.TeacherSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
 
@@ -345,6 +351,7 @@ class TeacherView(generics.GenericAPIView):
 class TeacherDetailView(generics.GenericAPIView):
     queryset = models.Teacher.objects.all()
     serializer_class = serializers.TeacherSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
         user = request.user
