@@ -3,12 +3,12 @@ from rest_framework.routers import DefaultRouter
 from . import views
 from main import views as main_views
 
-router = DefaultRouter()
 
-router.register('courses', views.CourseViewSet, basename='course')
+
+
+
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('login/', main_views.LoginView.as_view(), name='login'),
     path('signup/', main_views.SignUpView.as_view(), name='signup'),
     path('students/', views.StudentView.as_view(), name='students'),
@@ -18,5 +18,7 @@ urlpatterns = [
     path('grades/', views.GradeView.as_view(), name='grades'),
     path('grades/<int:pk>/', views.GradeDetailView.as_view(), name='grades'),
     path('teachers/', views.TeacherView.as_view(), name='teachers'),
-    path('teachers/<int:pk>/', views.TeacherDetailView.as_view(), name='teacher-detail')
+    path('teachers/<int:pk>/', views.TeacherDetailView.as_view(), name='teacher-detail'),
+    path('courses/', views.CourseView.as_view(), name='courses'),
+    path('courses/<int:pk>/', views.CourseDetailView.as_view(), name='course-detail')
 ]
