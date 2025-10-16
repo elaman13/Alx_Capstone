@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework import filters
 from . import serializers
 from main import models
 
@@ -9,7 +10,9 @@ from main import models
 class StudentView(generics.GenericAPIView):
     queryset = models.Student.objects.all()
     serializer_class = serializers.StudentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, filters.OrderingFilter]
+    ordering_fields = ['first_name', 'last_name']
+    ordering = ['first_name']
 
     def get(self, request):
         user = request.user
