@@ -4,68 +4,68 @@ This project is a simple API for managing student, teacher, course, section and 
 
 Features
 
-- Students
+# Students
 
-Admin can create, list, update, delete students.
+- Admin can create, list, update, delete students.
 
-Teachers can see students only in they assigned sections.
+- Teachers can see students only in they assigned sections.
 
-Students can see only their own info.
+- Students can see only their own info.
 
-Teachers
+# Teachers
 
-Admin can manage all teachers.
+- Admin can manage all teachers.
 
-Teacher can see and update only they profile.
+- Teacher can see and update only they profile.
 
-Courses
+# Courses
 
-Admin can create and manage courses.
+- Admin can create and manage courses.
 
-Only admin can see courses.
+- Only admin can see courses.
 
-Sections
+# Sections
 
-Admin can manage all sections.
+- Admin can manage all sections.
 
-Teacher can see only sections they assigned.
+- Teacher can see only sections they assigned.
 
-Students can not see sections directly.
+- Students can not see sections directly.
 
-Grades
+# Grades
 
-Admin can create and manage grades.
+- Admin can create and manage grades.
 
-Teacher can update grades only in their courses.
+- Teacher can update grades only in their courses.
 
-Students can see only their own grades.
+- Students can see only their own grades.
 
-Searching and ordering
+# Searching and ordering
 
-Some views support searching and ordering (like students, teachers, courses, grades) using query params.
+- Some views support searching and ordering (like students, teachers, courses, grades) using query params.
 
-Role based permissions
+# Role based permissions
 
-Every request check the user role (admin, teacher, student) and give acces accordly.
+- Every request check the user role (admin, teacher, student) and give acces accordly.
 
 API Endpoints
 
-/api/students/ - list or create students
+- /api/students/ - list or create students
 
-/api/students/<id>/ - get, update, delete student
+- /api/students/<id>/ - get, update, delete student
 
-/api/teachers/ - list or create teachers
+- /api/teachers/ - list or create teachers
 
-/api/teachers/<id>/ - get, update, delete teacher
+- /api/teachers/<id>/ - get, update, delete teacher
 
-/api/courses/ - list or create courses
+- /api/courses/ - list or create courses
 
-/api/courses/<id>/ - get, update, delete course
+- /api/courses/<id>/ - get, update, delete course
 
-/api/sections/ - list or create sections
+- /api/sections/ - list or create sections
 
-/api/sections/<id>/ - get, update, delete section
+- /api/sections/<id>/ - get, update, delete section
 
-/api/grades/ - list or create grades
+-/api/grades/ - list or create grades
 
-/api/grades/<id>/ - get, update, delete grade
+-/api/grades/<id>/ - get, update, delete grade
