@@ -1,4 +1,3 @@
-from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -10,7 +9,8 @@ from main import models
 class StudentView(generics.GenericAPIView):
     queryset = models.Student.objects.all()
     serializer_class = serializers.StudentSerializer
-    permission_classes = [permissions.IsAuthenticated, filters.OrderingFilter]
+    permission_classes = [permissions.IsAuthenticated]
+    search_fields = ['first_name', 'last_name', 'email']
     ordering_fields = ['first_name', 'last_name']
     ordering = ['first_name']
 
@@ -56,7 +56,6 @@ class StudentView(generics.GenericAPIView):
         )
 
 
-
 class StudentDetailView(generics.GenericAPIView):
     serializer_class = serializers.StudentSerializer
     queryset = models.Student.objects.all()
@@ -79,7 +78,7 @@ class StudentDetailView(generics.GenericAPIView):
             student = self.get_object()
             student.delete()
 
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
     
     def patch(self, request, pk):
@@ -95,6 +94,10 @@ class SectionView(generics.GenericAPIView):
     queryset = models.Section.objects.all()
     serializer_class = serializers.SectionSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['name']
+    ordering_fields = ['name']
+    ordering = ['name']
 
     def get(self, request):
         """
@@ -189,6 +192,11 @@ class SectionDetailView(generics.GenericAPIView):
 class CourseView(generics.GenericAPIView):
     queryset = models.Course.objects.all()
     serializer_class = serializers.CourseSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['title', 'credit_hour']
+    ordering_fields = ['title']
+    ordering = ['title']
 
     def get(self, request):
 
@@ -248,13 +256,27 @@ class GradeView(generics.GenericAPIView):
     queryset = models.Grade.objects.all()
     serializer_class = serializers.GradeSerializer
     permission_classes = [permissions.IsAuthenticated]
+    search_fields = ['student__first_name', 'student__last_name', 'course__name']
+    ordering_fields = ['points', 'date']
+    ordering = ['date']
+
 
     def get(self, request):
+        grades = self.get_queryset()
 
-        if request.user.role in ['teacher', 'admin']:
-            serializer = self.get_serializer(self.get_queryset(), many=True)           
+        # Get all grades
+        if request.user.role == 'admin':
+            serializer = self.get_serializer(grades, many=True)           
             return Response(serializer.data, status=status.HTTP_200_OK)
         
+        # Get if the teacher teaches that course
+        elif request.user.role == 'teacher':
+            teacher = get_object_or_404(models.Teacher, user=request.user)
+            filtered_grades = grades.filter(course__in=teacher.courses.all())
+            serializer = self.get_serializer(filtered_grades, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        # Get enrolled course grades only
         elif request.user.role == 'student':
             student = self.get_queryset().filter(student__user=request.user)
             serializer = self.get_serializer(student, many=True)
@@ -264,6 +286,7 @@ class GradeView(generics.GenericAPIView):
     
     def post(self, request):
         
+        # only Admin can Post
         if request.user.role == 'admin':
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -284,7 +307,6 @@ class GradeDetailView(generics.GenericAPIView):
 
         if user.role == 'admin':
             serializer = self.get_serializer(grade)
-
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         elif user.role == 'teacher' and self.get_object().course.assigned_teacher.user == request.user:
@@ -331,6 +353,11 @@ class TeacherView(generics.GenericAPIView):
     queryset = models.Teacher.objects.all()
     serializer_class = serializers.TeacherSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email']
+    ordering_fields = ['first_name', 'last_name']
+    ordering = ['first_name']
+
 
     def get(self, request):
 
