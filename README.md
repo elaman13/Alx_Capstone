@@ -66,6 +66,33 @@ API Endpoints
 
 - /api/sections/<id>/ - get, update, delete section
 
--/api/grades/ - list or create grades
+- /api/grades/ - list or create grades
 
--/api/grades/<id>/ - get, update, delete grade
+- /api/grades/<id>/ - get, update, delete grade
+
+# Installation
+
+Clone the project
+
+- git clone https://github.com/yourusername/student-api.git
+- cd student-api
+
+# Migrate database
+
+- python manage.py makemigrations main
+- python manage.py migrate
+- python manage.py runserver
+
+# Open in browser
+
+- http://127.0.0.1:8000/api
+
+# Notes
+
+- You need login to acces most endpoints.
+
+- Searching example: /api/students/?search=biruk
+
+- Ordering example: /api/students/?ordering=first_name
+
+- Role based access is important, student cannot see other student, teacher cannot delete students.
