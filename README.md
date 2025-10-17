@@ -4,7 +4,7 @@ This project is a simple API for managing student, teacher, course, section and 
 
 Features
 
-Students
+- Students
 
 Admin can create, list, update, delete students.
 
