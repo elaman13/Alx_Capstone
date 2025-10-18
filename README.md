@@ -52,23 +52,23 @@ API Endpoints
 
 - /api/students/ - list or create students
 
-- /api/students/<id>/ - get, update, delete student
+- /api/students/[id]/ - get, update, delete student
 
 - /api/teachers/ - list or create teachers
 
-- /api/teachers/<id>/ - get, update, delete teacher
+- /api/teachers/[id]/ - get, update, delete teacher
 
 - /api/courses/ - list or create courses
 
-- /api/courses/<id>/ - get, update, delete course
+- /api/courses/[id]/ - get, update, delete course
 
 - /api/sections/ - list or create sections
 
-- /api/sections/<id>/ - get, update, delete section
+- /api/sections/[id]/ - get, update, delete section
 
 - /api/grades/ - list or create grades
 
-- /api/grades/<id>/ - get, update, delete grade
+- /api/grades/[id]/ - get, update, delete grade
 
 # Installation
 
