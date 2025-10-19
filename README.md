@@ -52,17 +52,15 @@ Features
 1. *Register User*
    - *POST* /api/signup/
    -  *Request Body:*
-   - json
    - {
-   -   "username": "Abi"
-   -   "email": "abi@gmail.com"
-   -   "password" "Abi@2025"
-   - }
+      "username": "Abi"
+      "email": "abi@gmail.com"
+      "password" "Abi@2025"
+    }
    - *Response:*
-   -  json
    - {
-   -   "message": "User registered successfully"
-   - }
+      "message": "User registered successfully"
+       }
 
 2. *Login User*
    - *POST* /api/login/
