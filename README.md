@@ -53,8 +53,8 @@ Features
    - *POST* /api/signup/
    -  *Request Body:*
    - {
-      "username": "Abi"
-      "email": "abi@gmail.com"
+      "username": "Abi",
+      "email": "abi@gmail.com",
       "password" "Abi@2025"
     }
    - *Response:*
@@ -66,9 +66,9 @@ Features
    - *POST* /api/login/
    - *Request Body:*
    - {
-   -    "username": "Abi",
-   -    "password": "Abi@2025"0
-   - }
+       "username": "Abi",
+       "password": "Abi@2025"0
+    }
   
 
 - /api/students/ - list or create students
