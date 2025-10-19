@@ -14,11 +14,6 @@ class LoginView(generics.GenericAPIView):
     serializer_class = serializers.LoginSerializer
     queryset = User.objects.all()
 
-    def get(self, request):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
-
-        return Response(serializer.data)
-
     def post(self,request):
         """
         return username and token when users logs in.
@@ -37,9 +32,6 @@ class SignUpView(generics.GenericAPIView):
     serializer_class = serializers.SignUpSerializer
     queryset = User.objects.all()
 
-    def get(self, request):
-        serializer = self.get_serializer(self.get_queryset(), many=True)
-        return Response(serializer.data)
     
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
