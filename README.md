@@ -67,8 +67,10 @@ Features
    - *Request Body:*
    - {
        "username": "Abi",
-       "password": "Abi@2025"0
-    }
+       "password": "Abi@2025"
+     }
+   - *Response*
+   - {"username": "Abi", "token": [token]}
   
 
 - /api/students/ - list or create students
