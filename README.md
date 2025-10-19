@@ -1,10 +1,10 @@
-Student Management API
+# Student Management API
 
 This project is a simple API for managing student, teacher, course, section and grade. It is build with Django and Django REST Framework. The API have role based acces control, so users can see only what they allowed.
 
 Features
 
-# Students
+### Students
 
 - Admin can create, list, update, delete students.
 
@@ -12,19 +12,19 @@ Features
 
 - Students can see only their own info.
 
-# Teachers
+### Teachers
 
 - Admin can manage all teachers.
 
 - Teacher can see and update only they profile.
 
-# Courses
+### Courses
 
 - Admin can create and manage courses.
 
 - Only admin can see courses.
 
-# Sections
+### Sections
 
 - Admin can manage all sections.
 
@@ -32,7 +32,7 @@ Features
 
 - Students can not see sections directly.
 
-# Grades
+### Grades
 
 - Admin can create and manage grades.
 
@@ -40,15 +40,15 @@ Features
 
 - Students can see only their own grades.
 
-# Searching and ordering
+### Searching and ordering
 
 - Some views support searching and ordering (like students, teachers, courses, grades) using query params.
 
-# Role based permissions
+### Role based permissions
 
 - Every request check the user role (admin, teacher, student) and give acces accordly.
 
-API Endpoints
+## API Endpoints
 
 - /api/students/ - list or create students
 
@@ -70,24 +70,24 @@ API Endpoints
 
 - /api/grades/[id]/ - get, update, delete grade
 
-# Installation
+## Installation
 
-Clone the project
+#### Clone the project
 
 - git clone https://github.com/yourusername/student-api.git
 - cd student-api
 
-# Migrate database
+## Migrate database
 
 - python manage.py makemigrations main
 - python manage.py migrate
 - python manage.py runserver
 
-# Open in browser
+## Open in browser
 
 - http://127.0.0.1:8000/api
 
-# Notes
+## Notes
 
 - You need login to acces most endpoints.
 
