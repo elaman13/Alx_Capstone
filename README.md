@@ -64,7 +64,15 @@ Features
        "message": "User registered successfully"
      }
 
-     
+2. *Login User*
+   - *POST* /api/login/
+   - *Request Body:*
+   - {
+   -    "username": "Abi",
+   -    "password": "Abi@2025"0
+   - }
+  
+
 - /api/students/ - list or create students
 
 - /api/students/[id]/ - get, update, delete student
