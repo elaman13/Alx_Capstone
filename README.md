@@ -49,7 +49,22 @@ Features
 - Every request check the user role (admin, teacher, student) and give acces accordly.
 
 ## API Endpoints
+1. *Register User*
+   - *POST* /api/signup/
+     *Request Body:*
+     json
+     {
+       "username": "Abi"
+       "email": "abi@gmail.com"
+       "password" "Abi@2025"
+     }
+     *Response:*
+     json
+     {
+       "message": "User registered successfully"
+     }
 
+     
 - /api/students/ - list or create students
 
 - /api/students/[id]/ - get, update, delete student
