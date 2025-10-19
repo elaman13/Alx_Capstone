@@ -51,14 +51,14 @@ Features
 ## API Endpoints
 1. *Register User*
    - *POST* /api/signup/
-     *Request Body:*
+   -  *Request Body:*
      json
      {
        "username": "Abi"
        "email": "abi@gmail.com"
        "password" "Abi@2025"
      }
-     *Response:*
+    - *Response:*
      json
      {
        "message": "User registered successfully"
