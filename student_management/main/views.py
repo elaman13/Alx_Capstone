@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -13,6 +13,7 @@ class LoginView(generics.GenericAPIView):
     """
     serializer_class = serializers.LoginSerializer
     queryset = User.objects.all()
+    permission_classes = [permissions.AllowAny]
 
     def post(self,request):
         """
@@ -31,6 +32,7 @@ class SignUpView(generics.GenericAPIView):
     """
     serializer_class = serializers.SignUpSerializer
     queryset = User.objects.all()
+    permission_classes = [permissions.AllowAny]
 
     
     def post(self, request):

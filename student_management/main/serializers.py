@@ -14,6 +14,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
     token = serializers.CharField(read_only=True)
+
     
     def create(self, validated_data): 
         """Authenticate and return a new token."""

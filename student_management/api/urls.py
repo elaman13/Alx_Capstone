@@ -4,10 +4,6 @@ from . import views
 from main import views as main_views
 
 
-
-
-
-
 urlpatterns = [
     path('login/', main_views.LoginView.as_view(), name='login'),
     path('signup/', main_views.SignUpView.as_view(), name='signup'),

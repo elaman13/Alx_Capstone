@@ -36,6 +36,7 @@ class TeacherSerializer(serializers.ModelSerializer):
     
 
 class SectionSerializer(serializers.ModelSerializer):
+    students = StudentSerializer(read_only=True, many=True)
     class Meta:
         model = models.Section
         fields = ['id', 'name', 'teachers', 'students']
